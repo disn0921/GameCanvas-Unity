@@ -11,9 +11,8 @@ using UnityEngine.InputSystem;
 public sealed class Game : GameBase
 {
     // 変数の宣言
-    int sec = 0;
-
-    /// <summary>
+    int time = 600;
+    int score = 0;    /// <summary>
     /// 初期化処理
     /// </summary>
     public override void InitGame()
@@ -21,8 +20,7 @@ public sealed class Game : GameBase
         // キャンバスの大きさを設定します
         gc.ChangeCanvasSize(720, 1280);
     }
-
-    /// <summary>
+gc.ChangeCanvasSize(360, 640);    /// <summary>
     /// 動きなどの更新処理
     /// </summary>
     public override void UpdateGame()
@@ -30,7 +28,18 @@ public sealed class Game : GameBase
         // 起動からの経過時間を取得します
         sec = (int)gc.TimeSinceStartup;
     }
+time -= 1;
 
+if (time >= 0)
+{
+    score += gc.PointerBeginCount;
+}
+
+if (gc.GetPointerDuration(0) >= 2)
+{
+    time = 600;
+    score = 0;
+}
     /// <summary>
     /// 描画の処理
     /// </summary>
@@ -51,4 +60,14 @@ public sealed class Game : GameBase
         gc.SetStringAnchor(GcAnchor.UpperRight);
         gc.DrawString($"{sec}s", 630, 10);
     }
+gc.ClearScreen();
+
+if(time >= 0 ){
+  gc.DrawString("time:"+time,60,0);
 }
+else {
+  gc.DrawString("finished!!",60,0);
+}
+
+gc.DrawString("score:"+score,60,60);
+
